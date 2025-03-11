@@ -34,11 +34,11 @@ public class MotorForElevator extends SubsystemBase {
 
   public void teleopPeriodic() {
     if (joystick.getBackButton() == true) {
-      elevatorMotor.set(0.7);
-      elevatorFollowerMotor.set(0.7);
+      elevatorMotor.set(0.5);
+      elevatorFollowerMotor.set(-0.5);
     } else if (joystick.getStartButton() == true) {
-      elevatorMotor.set(-0.7);
-      elevatorFollowerMotor.set(-0.7);
+      elevatorMotor.set(-0.5);
+      elevatorFollowerMotor.set(0.5);
     } else {
       elevatorMotor.set(0);
       elevatorFollowerMotor.set(0);

@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
     DrivetrainSubsystem.m_rightFollowerMotor.set(-(joystick.getLeftY() + joystick.getRightX()));**/
 
     //m_DrivetrainSubsystem.teleopPeriodic();
-    m_DrivetrainSubsystem.teleopDrive(joystick.getLeftX(), joystick.getRightX());
+    m_DrivetrainSubsystem.teleopDrive(-joystick.getRightX(), -joystick.getLeftY());
     m_HatchSubsystem.teleopPeriodic();
     m_MotorForElevator.teleopPeriodic();
     m_autos.teleopAutoCommand(m_MotorForElevator, m_HatchSubsystem);

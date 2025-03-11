@@ -15,7 +15,7 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 public class HatchSubsystem extends SubsystemBase {
 
-  public DoubleSolenoid m_hatchDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
+  public DoubleSolenoid m_hatchDoubleSolenoid = new DoubleSolenoid(5, PneumaticsModuleType.CTREPCM, 2, 3);
 
   public static XboxController joystick = new XboxController(0);
 

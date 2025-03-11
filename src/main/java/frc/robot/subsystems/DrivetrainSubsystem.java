@@ -45,10 +45,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
 
-  @Override
+  /**@Override
   public void periodic() {
     
-  }
+  }*/
 
   public void teleopDrive(double fwd, double rot) {
       m_drive.arcadeDrive(fwd, rot);
@@ -87,12 +87,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   } 
   **/
 
-  @Override
-  public void simulationPeriodic() {
-    
-  }
-
+  /**
   public void setDefaultCommand(RunCommand runCommand, Object teleopDrive, DrivetrainSubsystem drivetrainSubsystem) {
-  }
+  } */
 
 }
