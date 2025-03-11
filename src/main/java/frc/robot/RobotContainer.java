@@ -7,10 +7,21 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GrabHatch;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.HatchSubsystem;
+import frc.robot.subsystems.MotorForElevator;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.revrobotics.spark.SparkMax;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,44 +31,50 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  
+  public MotorForElevator motorForElevator = new MotorForElevator();
+  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
+  private final Command driveStraight = Autos.driveStraight(m_drivetrainSubsystem);
+  private final Command driveAndScore = Autos.driveAndScore(motorForElevator, m_drivetrainSubsystem, m_hatchSubsystem);
+
+  public SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  public static XboxController m_driverController =
+      new XboxController(0);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final XboxController m_driverControllerTwo =
+      new XboxController(1);
+
+
   public RobotContainer() {
-    // Configure the trigger bindings
+
     configureBindings();
-  }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
+    //m_drivetrainSubsystem.setDefaultCommand(new RunCommand(() ->
+    //m_drivetrainSubsystem.teleopDrive(m_driverController.getLeftY(), m_driverController.getRightX()), m_drivetrainSubsystem));
+    //m_drivetrainSubsystem.teleopDrive(m_driverController.getLeftY(), m_driverController.getLeftX()), m_drivetrainSubsystem));
+    
+    m_chooser.addOption("Drive Straight", driveStraight);
+    m_chooser.addOption("Drive and Score", driveAndScore);
+    SmartDashboard.putData(m_chooser);
+  
+  }
+  
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    
+    //new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).onTrue(new GrabHatch(m_hatchSubsystem));
+    //new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).onTrue(new ReleaseHatch(m_hatchSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    
   }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_chooser.getSelected();
+  
   }
 }
+
+

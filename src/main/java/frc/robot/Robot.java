@@ -4,9 +4,27 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.RobotContainer;
+import frc.robot.commands.GrabHatch;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.HatchSubsystem;
+import frc.robot.subsystems.MotorForElevator;
+import frc.robot.commands.Autos;
+
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -16,16 +34,34 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private final RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
+
+  DrivetrainSubsystem m_DrivetrainSubsystem = new DrivetrainSubsystem();
+  HatchSubsystem m_HatchSubsystem = new HatchSubsystem();
+  MotorForElevator m_MotorForElevator = new MotorForElevator();
+  Autos m_autos = new Autos();
+
+
+  XboxController joystick = new XboxController(0);
+  //Compressor compressor = new Compressor(5,PneumaticsModuleType.CTREPCM);
+  //DoubleSolenoid temp = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {
+  @Override
+  public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    //m_robotContainer = new RobotContainer();
+    
+    /**CameraServer.startAutomaticCapture();
+    UsbCamera camera = CameraServer.startAutomaticCapture();
+    camera.setResolution(800, 50);*/
+
   }
 
   /**
@@ -45,16 +81,11 @@ public class Robot extends TimedRobot {
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {}
-
-  @Override
-  public void disabledPeriodic() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -75,11 +106,54 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
+    //compressor.enableDigital();
+
+
+
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+      /**if (m_XboxController.getLeftBumperPressed()) {
+        m_pneumatic.m_pneumaticsSubsystem.set(Value.kForward);
+      }
+      else {
+        m_pneumatic.m_pneumaticsSubsystem.set(Value.kReverse);
+      }*/
+    /**DrivetrainSubsystem.m_leftMotor.set(joystick.getLeftY() - joystick.getRightX());
+    DrivetrainSubsystem.m_rightMotor.set(-(joystick.getLeftY() + joystick.getRightX()));
+    DrivetrainSubsystem.m_leftFollowerMotor.set(joystick.getLeftY() - joystick.getRightX());
+    DrivetrainSubsystem.m_rightFollowerMotor.set(-(joystick.getLeftY() + joystick.getRightX()));**/
+
+    //m_DrivetrainSubsystem.teleopPeriodic();
+    m_DrivetrainSubsystem.teleopDrive(joystick.getLeftX(), joystick.getRightX());
+    m_HatchSubsystem.teleopPeriodic();
+    m_MotorForElevator.teleopPeriodic();
+    m_autos.teleopAutoCommand(m_MotorForElevator, m_HatchSubsystem);
+
+
+
+
+    /**if (joystick.getLeftBumperPressed()) {
+      temp.toggle();
+      DriverStation.reportError("LEFT PRESSED", false);
+    }
+
+    if (joystick.getRightBumperPressed()) {
+      temp.set(kReverse);
+      DriverStation.reportError("RIGHT PRESSED", false);
+      
+    }**/
+
+    
+
+    //String temp = Double.toString(joystick.getLeftY());
+    //DriverStation.reportError(temp, false);
+
+  }
 
   @Override
   public void testInit() {
@@ -98,4 +172,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+  
 }
