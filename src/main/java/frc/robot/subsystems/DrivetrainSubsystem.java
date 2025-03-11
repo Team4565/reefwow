@@ -18,6 +18,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public SparkMax m_rightFollowerMotor = new SparkMax(3, SparkMax.MotorType.kBrushed);
   public DifferentialDrive m_drive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   public XboxController joystick = new XboxController(0);
+  /**
+  @Override
+  public void robotInit() {
+    public SparkMax m_leftMotor = new SparkMax(1, SparkMax.MotorType.kBrushed);
+    public SparkMax m_rightMotor = new SparkMax(4,SparkMax.MotorType.kBrushed);
+    public SparkMax m_leftFollowerMotor = new SparkMax(2, SparkMax.MotorType.kBrushed);
+    public SparkMax m_rightFollowerMotor = new SparkMax(3, SparkMax.MotorType.kBrushed);
+    public DifferentialDrive m_drive = new DifferentialDrive(m_leftMotor, m_rightMotor);
+
+  }**/
 
   public DrivetrainSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
