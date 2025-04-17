@@ -30,7 +30,7 @@ public class RunForTime extends Command {
   }
 
   public void execute() {
-    m_DrivetrainSubsystem.teleopDrive(0.5,0);
+    m_DrivetrainSubsystem.teleopDrive(0,0.5);
   }
 
   public void end() {
@@ -41,8 +41,9 @@ public class RunForTime extends Command {
 
   }
 
+  //field automatically ends
   public boolean isFinished() {
-    return (Timer.getFPGATimestamp() > startTime + time);
+    return Timer.getFPGATimestamp() > (startTime + time);
   }
 
 

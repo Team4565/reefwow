@@ -34,7 +34,7 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  //private RobotContainer m_robotContainer = new RobotContainer();
 
   DrivetrainSubsystem m_DrivetrainSubsystem = new DrivetrainSubsystem();
   HatchSubsystem m_HatchSubsystem = new HatchSubsystem();
@@ -58,9 +58,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     //m_robotContainer = new RobotContainer();
     
-    /**CameraServer.startAutomaticCapture();
+    /*CameraServer.startAutomaticCapture();
     UsbCamera camera = CameraServer.startAutomaticCapture();
-    camera.setResolution(800, 50);*/
+    camera.setResolution(800, 200);
+    */
 
   }
 
@@ -85,7 +86,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = Autos.driveStraight(m_DrivetrainSubsystem, m_HatchSubsystem); // m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -95,7 +96,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
   public void teleopInit() {
@@ -129,10 +131,10 @@ public class Robot extends TimedRobot {
     DrivetrainSubsystem.m_rightFollowerMotor.set(-(joystick.getLeftY() + joystick.getRightX()));**/
 
     //m_DrivetrainSubsystem.teleopPeriodic();
-    m_DrivetrainSubsystem.teleopDrive(-joystick.getRightX(), -joystick.getLeftY());
+    m_DrivetrainSubsystem.teleopDrive(-joystick.getLeftX() * 0, -joystick.getLeftY() * 0);
     m_HatchSubsystem.teleopPeriodic();
     m_MotorForElevator.teleopPeriodic();
-    m_autos.teleopAutoCommand(m_MotorForElevator, m_HatchSubsystem);
+    // m_autos.teleopAutoCommand(m_MotorForElevator, m_HatchSubsystem);
 
 
 

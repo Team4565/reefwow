@@ -41,9 +41,10 @@ public class Autos {
   }
 
   //First command, drive straight for 2 seconds at 0.5 speed to score points when crossing the line
-  public static Command driveStraight(DrivetrainSubsystem drivetrainSubsystem) {
+  public static Command driveStraight(DrivetrainSubsystem drivetrainSubsystem, HatchSubsystem hatchSubsystem) {
     SequentialCommandGroup group = new SequentialCommandGroup(
-      new RunForTime(drivetrainSubsystem, 2, -0.5)
+      new RunForTime(drivetrainSubsystem, 2, -0.5),
+      new Release(hatchSubsystem)
     );
 
     return group;
@@ -68,6 +69,10 @@ public class Autos {
       new MotorForElevatorCmd(motorForElevator, 2.5, -0.7)
     );
     return group;
+  }
+
+  public void autonomousInit(){
+    
   }
 
 

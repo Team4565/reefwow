@@ -20,9 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.revrobotics.spark.SparkMax;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -32,17 +29,18 @@ import com.revrobotics.spark.SparkMax;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
-  public MotorForElevator motorForElevator = new MotorForElevator();
+  private final MotorForElevator m_motorForElevator = new MotorForElevator();
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
-  private final Command driveStraight = Autos.driveStraight(m_drivetrainSubsystem);
-  private final Command driveAndScore = Autos.driveAndScore(motorForElevator, m_drivetrainSubsystem, m_hatchSubsystem);
+  private final Command driveStraight = Autos.driveStraight(m_drivetrainSubsystem, m_hatchSubsystem);
+  private final Command driveAndScore = Autos.driveAndScore(m_motorForElevator, m_drivetrainSubsystem, m_hatchSubsystem);
 
   public SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static XboxController m_driverController =
       new XboxController(0);
+
 
   private final XboxController m_driverControllerTwo =
       new XboxController(1);
@@ -58,6 +56,7 @@ public class RobotContainer {
     
     m_chooser.addOption("Drive Straight", driveStraight);
     m_chooser.addOption("Drive and Score", driveAndScore);
+    m_chooser.setDefaultOption("Drive Straight", driveStraight);
     SmartDashboard.putData(m_chooser);
   
   }
@@ -72,8 +71,8 @@ public class RobotContainer {
   
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_chooser.getSelected();
-  
+    //return m_chooser.getSelected();
+    return Autos.driveStraight(m_drivetrainSubsystem, m_hatchSubsystem);
   }
 }
 

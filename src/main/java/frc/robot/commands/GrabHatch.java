@@ -17,6 +17,6 @@ public class GrabHatch extends Command {
 
     @Override
     public void initialize() {
-        m_hatchSubsystem.grabHatch();
+        //m_hatchSubsystem.grabHatch();
     }
 }

@@ -27,7 +27,7 @@ public class Release extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_hatchSubsystem.releaseHatch();
+    //m_hatchSubsystem.releaseHatch();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -19,7 +18,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public DifferentialDrive m_drive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   public XboxController joystick = new XboxController(0);
   /**
-  @Override
   public void robotInit() {
     public SparkMax m_leftMotor = new SparkMax(1, SparkMax.MotorType.kBrushed);
     public SparkMax m_rightMotor = new SparkMax(4,SparkMax.MotorType.kBrushed);
@@ -45,10 +43,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
 
-  /**@Override
+  @Override
   public void periodic() {
-    
-  }*/
+    m_drive.feed();
+  }
 
   public void teleopDrive(double fwd, double rot) {
       m_drive.arcadeDrive(fwd, rot);
